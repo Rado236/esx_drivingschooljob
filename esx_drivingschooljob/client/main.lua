@@ -70,10 +70,10 @@ function OpenDrivingSchoolMenu()
 
 if data.current.value == 'give' then
 			local elements = {
-                {label = _U('traffic_give'), value = 'trg'}
+                                  {label = _U('traffic_give'), value = 'trg'}
 				--{label = ('motor'), value = 'motg'},
 				--{label = ('car'), value = 'carg'},
-                --{label = ('truck'), value = 'truckg'}
+                                --{label = ('truck'), value = 'truckg'}
 }
            if ESX.PlayerData.job.grade_name == 'examiner' then
 				table.insert(elements, {label = _U('car_give'), value = 'carg'})
@@ -96,14 +96,14 @@ ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'give', {
 				if closestPlayer ~= -1 and closestDistance <= 3.0 then
 					local action = data2.current.value
 
-					if action == 'trg' then
+		   if action == 'trg' then
                            TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'dmv')
                     elseif action == 'carg' then
-						TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive')
-					elseif action == 'motg' then
-						TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_bike')
+			   TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive')
+		   elseif action == 'motg' then
+			   TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_bike')
                     elseif action == 'truckg' then
-                    TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_truck')
+                           TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_truck')
                          end
                      else
                          ESX.ShowNotification(_U('no_players_nearby'))
@@ -119,15 +119,15 @@ local elements = {
                                 --{label = _U('truck_remove'), value = 'truckr'}
 }
 
-            if ESX.PlayerData.job.grade_name == 'carinstr' and ESX.PlayerData.job.grade_name == 'examiner' then
+            if ESX.PlayerData.job.grade_name == 'carinstr' or ESX.PlayerData.job.grade_name == 'examiner' then
 				table.insert(elements, {label = _U('car_remove'), value = 'carr'})
 			end
 			
-			if ESX.PlayerData.job.grade_name == 'motorinstr' and ESX.PlayerData.job.grade_name == 'examiner' then
+			if ESX.PlayerData.job.grade_name == 'motorinstr' or ESX.PlayerData.job.grade_name == 'examiner' then
 				table.insert(elements, {label = _U('motor_remove'), value = 'motr'})
 			end
 			
-			if ESX.PlayerData.job.grade_name == 'truckinstr' and ESX.PlayerData.job.grade_name == 'examiner' then
+			if ESX.PlayerData.job.grade_name == 'truckinstr' or ESX.PlayerData.job.grade_name == 'examiner' then
 				table.insert(elements, {label = _U('truck_remove'), value = 'truckrr'})
 			end
 
