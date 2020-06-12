@@ -1,0 +1,37 @@
+Locales['en'] = {
+--Menu
+  ['driving_menu']              = 'Driving School Menu',
+  ['give']              = 'Give License',
+  ['retrieve']              = 'Remove License',
+  ['billing']              = 'Bill',
+  ['traffic_give']              = 'Give Traffic License',
+  ['car_give']              = 'Give Car License',
+  ['motor_give']              = 'Give Motorcycle License',
+  ['truck_give']              = 'Give Truck License',
+  ['traffic_remove']              = 'Remove Traffic License',
+  ['car_remove']              = 'Remove Car License',
+  ['motor_remove']              = 'Remove Motorcycle License',
+  ['truck_remove']              = 'Remove Truck License',
+--Bill menu
+  ['amount_invalid']            = 'Invalid amount',
+  ['no_players_nearby']         = 'No players nearby',
+--Actions Menu
+  ['open_actions']              = 'Press ~INPUT_CONTEXT~ to open the Actions menu',
+  ['vehicle_list']              = 'Vehicle List',
+  ['deposit_stock']             = 'Deposit Stock',
+  ['withdraw_stock']            = 'Withdraw Stock',
+  ['boss_actions']              = 'Boss Actions',
+  ['service_vehicle']              = 'Service Vehicle',
+  ['car']              = 'Car',
+  ['motor']              = 'Motorcycle',
+  ['truck']              = 'Truck',
+  ['quantity']                  = 'Quantity',
+  ['invalid_quantity']          = 'invalid quantity',
+  ['inventory']          = 'Inventory',
+  ['you_removed']               = 'You have removed x',
+  ['you_added']                 = 'You have added x',
+  ['cloakroom']                 = 'Work Clothes',
+  ['cloakroom2']                 = 'Civilian Clothes',
+  ['veh_stored']                 = 'Press ~INPUT_CONTEXT~ to store vehicle',
+  ['map_blip']                 = 'Auto School'
+}
