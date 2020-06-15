@@ -5,6 +5,7 @@ Config.MarkerType                 = 1
 Config.MarkerSize                 = {x = 1.5, y = 1.5, z = 0.5}
 Config.EnablePlayerManagement     = true
 Config.MaxInService           = -1
+Config.TheoryPrice =   200
 
 Config.Locale                     = 'en'
 
@@ -17,6 +18,7 @@ Config.Zones = {
 		Type  = 20
 	},
 
+        
 	VehicleDeleter = {
 		Pos   = {x = 216.87, y = -1381.1, z = 30.2},
 		Size  = {x = 1.5, y = 1.5, z = 1.0},
@@ -31,6 +33,15 @@ Config.Zones = {
 		Type  = -1
 	},
 
+}
+
+Config.Theory = {
+   DMVSchool = {
+		Pos   = {x = 206.99, y = -1386.7, z = 30.741},
+		Size  = {x = 1.5, y = 1.5, z = 1.0},
+		Color = {r = 204, g = 204, b = 0},
+		Type  = 32
+	},
 }
 
 Config.Blip = {

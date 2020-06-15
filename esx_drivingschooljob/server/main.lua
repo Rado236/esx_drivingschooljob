@@ -84,4 +84,24 @@ ESX.RegisterServerCallback('esx_drivingschooljob:getPlayerInventory', function(s
 
 end)
 
+RegisterNetEvent('esx_drivingschooljob:addLicense')
+AddEventHandler('esx_drivingschooljob:addLicense', function(type)
+	local _source = source
+
+	TriggerEvent('esx_license:addLicense', _source, type, function()
+		TriggerEvent('esx_license:getLicenses', _source, function(licenses)
+			TriggerClientEvent('esx_drivingschooljob:loadLicenses', _source, licenses)
+		end)
+	end)
+end)
+
+RegisterNetEvent('esx_drivingschooljob:pay')
+AddEventHandler('esx_drivingschooljob:pay', function(price)
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+
+	xPlayer.removeMoney(price)
+	TriggerClientEvent('esx:showNotification', _source, _U('you_paid', ESX.Math.GroupDigits(price)))
+end)
+
 

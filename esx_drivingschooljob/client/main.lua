@@ -19,6 +19,9 @@ local CurrentActionMsg        = ''
 local CurrentActionData       = {}
 local TargetCoords            = nil
 local Blips                   = {}
+local Licenses                = {}
+local CurrentTest             = nil
+local CurrentTestType         = nil
 
 ESX                           = nil
 GUI.Time                      = 0
@@ -70,10 +73,10 @@ function OpenDrivingSchoolMenu()
 
 if data.current.value == 'give' then
 			local elements = {
-                                  {label = _U('traffic_give'), value = 'trg'}
+                {label = _U('traffic_give'), value = 'trg'}
 				--{label = ('motor'), value = 'motg'},
 				--{label = ('car'), value = 'carg'},
-                                --{label = ('truck'), value = 'truckg'}
+                --{label = ('truck'), value = 'truckg'}
 }
            if ESX.PlayerData.job.grade_name == 'examiner' then
 				table.insert(elements, {label = _U('car_give'), value = 'carg'})
@@ -96,14 +99,14 @@ ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'give', {
 				if closestPlayer ~= -1 and closestDistance <= 3.0 then
 					local action = data2.current.value
 
-		   if action == 'trg' then
+					if action == 'trg' then
                            TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'dmv')
                     elseif action == 'carg' then
-			   TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive')
-		   elseif action == 'motg' then
-			   TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_bike')
+						TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive')
+					elseif action == 'motg' then
+						TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_bike')
                     elseif action == 'truckg' then
-                           TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_truck')
+                    TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(closestPlayer), 'drive_truck')
                          end
                      else
                          ESX.ShowNotification(_U('no_players_nearby'))
@@ -142,6 +145,7 @@ ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'remove', {
 
 					if action == 'trr' then
 						TriggerServerEvent('esx_license:removeLicense',GetPlayerServerId(closestPlayer), 'dmv')
+                                                ESX.ShowNotification(xPlayer, GetPlayerServerId(closestPlayer) .. 'Test' )
 					elseif action == 'carr' then
 						TriggerServerEvent('esx_license:removeLicense',GetPlayerServerId(closestPlayer),'drive')
 					elseif action == 'motr' then
@@ -187,6 +191,96 @@ function OpenBillingMenu()
         menu.close()
     end)
 end
+
+--Theory test code
+function StartTheoryTest()
+	CurrentTest = 'theory'
+
+	SendNUIMessage({
+		openQuestion = true
+	})
+
+	ESX.SetTimeout(200, function()
+		SetNuiFocus(true, true)
+	end)
+
+	TriggerServerEvent('esx_drivingschooljob:pay', Config.TheoryPrice)
+end
+
+function StopTheoryTest(success)
+	CurrentTest = nil
+
+	SendNUIMessage({
+		openQuestion = false
+	})
+
+	SetNuiFocus(false)
+
+	if success then
+		TriggerServerEvent('esx_drivingschooljob:addLicense', 'dmv')
+		ESX.ShowNotification(_U('passed_test'))
+	else
+		ESX.ShowNotification(_U('failed_test'))
+	end
+end
+
+function OpenDMVSchoolMenu()
+	local ownedLicenses = {}
+
+	for i=1, #Licenses, 1 do
+		ownedLicenses[Licenses[i].type] = true
+	end
+
+	local elements = {}
+
+	if not ownedLicenses['dmv'] then
+		table.insert(elements, {
+			label = (('%s: <span style="color:green;">%s</span>'):format(_U('theory_test'), _U('school_item', ESX.Math.GroupDigits(Config.TheoryPrice)))),
+			value = 'theory_test'
+		})
+	
+	end
+
+	
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'dmvschool_actions', {
+		title    = _U('theory'),
+		elements = elements,
+		align    = 'top-left'
+	}, function(data, menu)
+		if data.current.value == 'theory_test' then
+			menu.close()
+			StartTheoryTest()
+		end
+	end, function(data, menu)
+		menu.close()
+
+		CurrentAction     = 'theory_menu'
+		CurrentActionMsg  = _U('press_open_theory')
+		CurrentActionData = {}
+end)
+end
+
+
+
+RegisterNUICallback('question', function(data, cb)
+	SendNUIMessage({
+		openSection = 'question'
+	})
+
+	cb()
+end)
+
+RegisterNUICallback('close', function(data, cb)
+	StopTheoryTest(true)
+	cb()
+end)
+
+RegisterNUICallback('kick', function(data, cb)
+	StopTheoryTest(false)
+	cb()
+end)
+
+--Driving Actions
 
 function OpenDrivingActionsMenu()
 
@@ -499,6 +593,12 @@ AddEventHandler('esx_drivingschooljob:hasEnteredMarker', function(zone)
     CurrentActionData = {}
   end
 
+  if zone == 'DMVSchool' then
+		CurrentAction     = 'theory_menu'
+		CurrentActionMsg  = _U('press_open_theory')
+		CurrentActionData = {}
+   end
+
   if zone == 'VehicleDeleter' then
 
     local playerPed = GetPlayerPed(-1)
@@ -518,6 +618,11 @@ end)
 AddEventHandler('esx_drivingschooljob:hasExitedMarker', function(zone)
   CurrentAction = nil
   ESX.UI.Menu.CloseAll()
+end)
+
+RegisterNetEvent('esx_drivingschooljob:loadLicenses')
+AddEventHandler('esx_drivingschooljob:loadLicenses', function(licenses)
+	Licenses = licenses
 end)
 
 --Blip
@@ -546,6 +651,12 @@ Citizen.CreateThread(function()
   while true do
 
     Wait(0)
+	local coords = GetEntityCoords(GetPlayerPed(-1))
+	for k,v in pairs(Config.Theory) do
+        if(v.Type ~= -1 and GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < Config.DrawDistance) then
+          DrawMarker(v.Type, v.Pos.x, v.Pos.y, v.Pos.z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, v.Size.x, v.Size.y, v.Size.z, v.Color.r, v.Color.g, v.Color.b, 100, false, true, 2, false, false, false, false)
+        end
+      end
 
     if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'driving' then
 
@@ -566,6 +677,24 @@ end)
 Citizen.CreateThread(function()
   while true do
     Wait(0)
+	local coords      = GetEntityCoords(GetPlayerPed(-1))
+      local isInMarker  = false
+      local currentZone = nil
+	for k,v in pairs(Config.Theory) do
+        if(GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < v.Size.x) then
+          isInMarker  = true
+          currentZone = k
+        end
+      end
+	  if (isInMarker and not HasAlreadyEnteredMarker) or (isInMarker and LastZone ~= currentZone) then
+        HasAlreadyEnteredMarker = true
+        LastZone                = currentZone
+        TriggerEvent('esx_drivingschooljob:hasEnteredMarker', currentZone)
+      end
+      if not isInMarker and HasAlreadyEnteredMarker then
+        HasAlreadyEnteredMarker = false
+        TriggerEvent('esx_drivingschooljob:hasExitedMarker', LastZone)
+      end
     if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'driving' then
       local coords      = GetEntityCoords(GetPlayerPed(-1))
       local isInMarker  = false
@@ -589,6 +718,25 @@ Citizen.CreateThread(function()
   end
 end)
 
+-- Block UI
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(1)
+
+		if CurrentTest == 'theory' then
+			local playerPed = PlayerPedId()
+
+			DisableControlAction(0, 1, true) -- LookLeftRight
+			DisableControlAction(0, 2, true) -- LookUpDown
+			DisablePlayerFiring(playerPed, true) -- Disable weapon firing
+			DisableControlAction(0, 142, true) -- MeleeAttackAlternate
+			DisableControlAction(0, 106, true) -- VehicleMouseControlOverride
+		else
+			Citizen.Wait(500)
+		end
+	end
+end)
+
 -- Key Controls
 Citizen.CreateThread(function()
     while true do
@@ -599,12 +747,19 @@ Citizen.CreateThread(function()
           SetTextComponentFormat('STRING')
           AddTextComponentString(CurrentActionMsg)
           DisplayHelpTextFromStringLabel(0, 0, 1, -1)
+		  
+		if IsControlJustReleased(0, 38) then
+		  if CurrentAction == 'theory_menu' then
+				OpenDMVSchoolMenu()
+	        end
+		end
 
           if IsControlJustReleased(0, 38) and ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'driving' then
 
             if CurrentAction == 'driving_actions_menu' then
                 OpenDrivingActionsMenu()
             end
+ 
 
             if CurrentAction == 'delete_vehicle' then
 
