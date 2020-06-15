@@ -16,7 +16,10 @@ Locales['en'] = {
   ['amount_invalid']            = 'Invalid amount',
   ['no_players_nearby']         = 'No players nearby',
 --Actions Menu
-  ['open_actions']              = 'Press ~INPUT_CONTEXT~ to open the Actions menu',
+  ['press_open_theory']         = 'Press ~INPUT_CONTEXT~ to open the Theoritical Test Menu. ',
+  ['school_item']               = 'Theory Test',
+  ['theory_test']               = 'Start',
+  ['open_actions']              = 'Press ~INPUT_CONTEXT~ to open the Actions Menu.',
   ['vehicle_list']              = 'Vehicle List',
   ['deposit_stock']             = 'Deposit Stock',
   ['withdraw_stock']            = 'Withdraw Stock',
