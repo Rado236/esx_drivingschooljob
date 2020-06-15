@@ -17,8 +17,12 @@ Locales['en'] = {
   ['no_players_nearby']         = 'No players nearby',
 --Actions Menu
   ['press_open_theory']         = 'Press ~INPUT_CONTEXT~ to open the Theoritical Test Menu. ',
+  ['theory']                    = 'Theory',
   ['school_item']               = 'Theory Test',
   ['theory_test']               = 'Start',
+  ['you_paid']                  = 'You paid for the test!',
+  ['failed_test']               = 'You failed the test!',
+  ['passed_test']               = 'You passed the test!',
   ['open_actions']              = 'Press ~INPUT_CONTEXT~ to open the Actions Menu.',
   ['vehicle_list']              = 'Vehicle List',
   ['deposit_stock']             = 'Deposit Stock',
