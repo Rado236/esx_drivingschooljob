@@ -4,6 +4,7 @@ Config.DrawDistance               = 100.0 -- How close would you need to come to
 Config.MarkerType                 = 1 -- It Is what it sounds like
 Config.MarkerSize                 = {x = 1.5, y = 1.5, z = 0.5}
 Config.EnablePlayerManagement     = true -- Enable If you have esx_society installed!
+Config.EnableSocietyOwnedVehicles = false
 Config.MaxInService           = -1
 Config.TheoryPrice =   200
 

@@ -17,8 +17,12 @@ Locales['bg'] = {
   ['no_players_nearby']         = 'Няма играч наблизо',
 --Actions Menu
   ['press_open_theory']         = 'Натисни ~INPUT_CONTEXT~ , за да отвориш менюто на Теоритичния изпит ',
+  ['theory']                    = 'Теория',
   ['school_item']               = 'Теоритичен Тест',
   ['theory_test']               = 'Започни',
+  ['you_paid']                  = 'Плати за теста!',
+  ['failed_test']               = 'Скъсаха те на теста!',
+  ['passed_test']               = 'Мина теста!',
   ['open_actions']              = 'Натисни ~INPUT_CONTEXT~ , за да отвориш менюто на Автошколата ',
   ['vehicle_list']              = 'Списък на служебни МПС-та',
   ['deposit_stock']             = 'Депозирайте предмети',
