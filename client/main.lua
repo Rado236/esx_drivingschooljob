@@ -759,6 +759,8 @@ Citizen.CreateThread(function()
 
         if IsControlJustReleased(0, Keys['F6']) and ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'driving' then
             OpenDrivingSchoolMenu()
+        else
+        	Citizen.Wait(100)
         end        
     end
 end)
