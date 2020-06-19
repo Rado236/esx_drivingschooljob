@@ -649,7 +649,6 @@ Citizen.CreateThread(function()
 	local coords      = GetEntityCoords(GetPlayerPed(-1))
       local isInMarker  = false
       local currentZone = nil
-    if ESX.PlayerData.job.name ~= 'driving' then
 	for a,v in pairs(Config.Theory) do
         if(GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true) < v.Size.x) then
           isInMarker  = true
@@ -665,7 +664,7 @@ Citizen.CreateThread(function()
         HasAlreadyEnteredMarker = false
         TriggerEvent('esx_drivingschooljob:hasExitedMarker', LastZone)
       end
-    elseif ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'driving' then
+    if ESX.PlayerData.job ~= nil and ESX.PlayerData.job.name == 'driving' then
       local coords      = GetEntityCoords(GetPlayerPed(-1))
       local isInMarker  = false
       local currentZone = nil
