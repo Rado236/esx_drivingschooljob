@@ -718,7 +718,7 @@ Citizen.CreateThread(function()
           AddTextComponentString(CurrentActionMsg)
           DisplayHelpTextFromStringLabel(0, 0, 1, -1)
 		  
-		if IsControlJustReleased(0, 38) then
+		if IsControlJustReleased(0, 245) then
 		  if CurrentAction == 'theory_menu' then
 				OpenDMVSchoolMenu()
 	        end
